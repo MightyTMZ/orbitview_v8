@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+:root {
+  /* Dark mode as default (the flex) */
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --background-secondary: #111111;
+  --foreground-secondary: #a0a0a0;
+  
+  /* Primary gradient colors - warmer tones */
+  --gradient-from: #f97316;
+  --gradient-via: #ea580c;
+  --gradient-to: #dc2626;
+  
+  /* Accent colors */
+  --accent-cyan: #06b6d4;
+  --accent-blue: #3b82f6;
+  --accent-orange: #fb923c;
+  --accent-red: #ef4444;
+  
+  /* Border and surface */
+  --border: rgba(255, 255, 255, 0.1);
+  --surface: rgba(255, 255, 255, 0.05);
+  
+  /* Chat specific */
+  --chat-user-bg: rgba(255, 255, 255, 0.1);
+  --chat-ai-bg: rgba(249, 115, 22, 0.15);
+  --chat-ai-border: rgba(234, 88, 12, 0.3);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-background-secondary: var(--background-secondary);
+  --color-foreground-secondary: var(--foreground-secondary);
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-manrope);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow-x: hidden;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom gradient utilities */
+.gradient-primary {
+  background: linear-gradient(135deg, var(--gradient-from) 0%, var(--gradient-via) 50%, var(--gradient-to) 100%);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--gradient-from) 0%, var(--gradient-via) 50%, var(--gradient-to) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-border {
+  border: 1px solid;
+  border-image: linear-gradient(135deg, var(--gradient-from), var(--gradient-via), var(--gradient-to)) 1;
+}
+
+/* Glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Glow effect - warmer */
+.glow {
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
+}
+
+/* Smooth animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}

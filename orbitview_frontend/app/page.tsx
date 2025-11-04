@@ -1,0 +1,17 @@
+import { Navbar } from "@/components/landing/Navbar";
+import { Hero } from "@/components/landing/Hero";
+import { Features } from "@/components/landing/Features";
+import { ExampleProfiles } from "@/components/landing/ExampleProfiles";
+import { Footer } from "@/components/landing/Footer";
+
+export default function Home() {
+  return (
+    <div className="min-h-screen bg-black">
+      <Navbar />
+      <Hero />
+      <Features />
+      <ExampleProfiles />
+      <Footer />
+    </div>
+  );
+}

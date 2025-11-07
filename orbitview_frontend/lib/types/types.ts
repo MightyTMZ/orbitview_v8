@@ -43,6 +43,7 @@ export interface Work {
 
 export interface Accomplishment {
   title: string;
+  issuer: string;
   description: string;
   date: string;
   type: "award" | "publication" | "speaking" | "certification" | "competition";

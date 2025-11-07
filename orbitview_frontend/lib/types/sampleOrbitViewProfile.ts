@@ -4,6 +4,7 @@ import { defaultPrivacySettings } from "./defaults";
 import tommy from "/tommy.png";
 import leetops from "/leetops.avif";
 import huvtspAlumni from "/huvtsp_search.avif";
+import colorproject from "/thecolorproject.avif";
 import medport from "/medport.avif";
 import clearsmile from "/clearsmile.avif";
 import omniwave from "/omniwave.avif";
@@ -117,10 +118,14 @@ Reached nearly 600 users, over 3500 impressions, and over 5000 searches as of Au
       tags: ["alumni network", "semantic search"],
     },
     {
-      title: "World Color Discovery",
+      title: "The Color Project (World)",
       description:
         "A global clicking game where players collectively discover all 16,777,216 unique colors—one click at a time. Built to handle massive concurrent traffic with an optimized backend capable of processing tens of thousands of requests per minute. Over 333,000 colors have been discovered as of August 2025.",
-      cover_image: null,
+      cover_image: {
+        image: colorproject,
+        url: "url",
+        alt: "The Color Project",
+      },
       links: [
         { title: "Live Site", link: "https://www.thecolorproject.world/" },
         {
@@ -136,7 +141,7 @@ Reached nearly 600 users, over 3500 impressions, and over 5000 searches as of Au
       start_date: "2025-05-01",
       end_date: "2025-07-01",
       tags: ["Web App", "Global Project", "Game", "Crowdsourcing"],
-      impact: "333,000+ colors discovered globally",
+      impact: "333,000+ colors discovered globally. Number 1 ranked on Google",
       tech_stack: [
         "TypeScript",
         "React",
@@ -147,11 +152,160 @@ Reached nearly 600 users, over 3500 impressions, and over 5000 searches as of Au
         "AWS",
       ],
     },
-    
+    {
+      title: "ClearSmile AI",
+      description:
+        "A computer vision system that automatically detects and removes dental braces from images using Mask R-CNN. Created to solve a personal problem of braces affecting photo confidence, demonstrating the power of AI to improve self-image and aesthetics.",
+      cover_image: {
+        image: clearsmile,
+        url: "image_url",
+        alt: "ClearSmile AI",
+      },
+      links: [
+        {
+          title: "GitHub Repository",
+          link: "https://github.com/MightyTMZ/clearsmile-ai",
+        },
+      ],
+      status: "completed",
+      start_date: "2024-07-29",
+      end_date: "2024-08-03",
+      tags: ["AI/ML", "Computer Vision", "Deep Learning"],
+      impact:
+        "Developed for personal use; inspired others facing similar insecurities",
+      tech_stack: ["Python", "PyTorch", "Mask R-CNN", "OpenCV", "FastAPI"],
+    },
+    {
+      title: "Omniwave",
+      description:
+        "A comprehensive speech-planning platform designed for debaters, Model UN delegates, and public speakers. Built from first-hand experience competing at provincial and national MUN conferences, Omniwave helps users plan speeches, organize segments like humor or pauses, and practice delivery in an intuitive, structured interface.",
+      cover_image: {
+        image: omniwave,
+        url: "url",
+        alt: "Omniwave Nexus",
+      },
+      links: [
+        { title: "Live Site", link: "https://omniwave-nexus.vercel.app/" },
+        {
+          title: "GitHub Repository",
+          link: "https://github.com/MightyTMZ/omniwave_nexus",
+        },
+      ],
+      status: "completed",
+      start_date: "2025-08-10",
+      end_date: "2025-08-13",
+      tags: ["Web App", "Education", "Speech Tech"],
+      impact:
+        "Used by 100+ delegates across Canada; improved speech planning efficiency",
+      tech_stack: ["Next.js", "TypeScript", "Firebase", "Tailwind CSS"],
+    },
+    {
+      title: "PlaneBrain",
+      description:
+        "An aviation and space-themed quiz platform built for my brother and aspiring explorers. Features fun, fast-paced quizzes with curated questions, progress tracking, and structured data for educational reinforcement. Focused on interactivity, knowledge building, and family passion for flight.",
+      cover_image: {
+        image: planebrain,
+        url: "url",
+        alt: "PlaneBrain",
+      },
+      links: [
+        {
+          title: "GitHub Repository",
+          link: "https://github.com/yourusername/planebrain",
+        },
+      ],
+      status: "completed",
+      start_date: "2025-08-17",
+      end_date: "2024-08-22",
+      tags: ["Education", "Web App", "Aviation", "Space"],
+      impact:
+        "Helped aviation enthusiasts learn faster through interactive quizzes",
+      tech_stack: ["Next.js", "TypeScript", "AWS S3", "React", "Node.js"],
+    },
+    {
+      title: "DeSync",
+      description:
+        "A zero-interest lending protocol built on Scroll that unlocks lucrative yield for lenders while allowing borrowers to borrow at 0% interest. It achieves a scalable, crypto-native solution through delta-hedging BTC, ETH, and USDC spot assets using perpetual futures contracts — democratizing loans for all.",
+      cover_image: {
+        image: desync,
+        url: "url",
+        alt: "DeSync",
+      },
+      links: [
+        {
+          title: "Video",
+          link: "https://drive.google.com/file/d/1Go4Ipu9FKrf-RKM37g1tqoAPZXLGQhaf/view",
+        },
+      ],
+      status: "completed",
+      start_date: "2025-03-01",
+      end_date: "2025-03-17",
+      tags: ["Blockchain", "DeFi", "Finance", "Smart Contracts"],
+      impact: "Winner 🥇 (DeFi Track) @ Scroll Open 2025",
+      tech_stack: ["Solidity", "Scroll", "Ethers.js", "Next.js", "TypeScript"],
+    },
+    {
+      title: "Earl Haig Science Society",
+      description:
+        "Earl Haig Science Society is part of Ontario’s largest public high school, serving as the central hub for STEM labs, contests, and opportunities. As Head of Engineering, I led workshops, collaborated with staff to solve school problems, and built the official website serving 330+ members (16% of the school). Integrated event modals with Google and Outlook Calendar APIs for seamless scheduling.",
+      cover_image: {
+        image: EarlHaigScienceSociety,
+        url: "url",
+        alt: "Earl Haig Science Society",
+      },
+      links: [
+        {
+          title: "Official Website",
+          link: "https://earlhaigsciencesociety.com/",
+        },
+      ],
+      status: "completed",
+      start_date: "2024-12-15",
+      end_date: "2024-12-25",
+      tags: ["Leadership", "STEM", "Community", "Education"],
+      impact:
+        "330+ members served; improved STEM accessibility and communication",
+      tech_stack: [
+        "Next.js",
+        "TypeScript",
+        "Google Calendar API",
+        "Outlook API",
+      ],
+    },
+    {
+      title: "Azure Partners",
+      description:
+        "Developed a multilingual company website supporting both English and Chinese visitors for Azure Partners. As the founding engineer, I helped the CEO present the company to major partners like ByteDance and Google, contributing to partnership and investment discussions. Built the site using Next.js with seamless internationalization and a polished, professional UI.",
+      cover_image: {
+        image: azure_partners,
+        url: "example url",
+        alt: "Azure Partners",
+      },
+      links: [{ title: "Live Site", link: "https://azurepartners.ai/" }],
+      status: "completed",
+      start_date: "2024-02-01",
+      end_date: "2024-03-15",
+      tags: [
+        "Web Development",
+        "Internationalization",
+        "Business",
+        "Partnerships",
+      ],
+      impact:
+        "Helped CEO present to ByteDance and Google to secure partnerships and investments",
+      tech_stack: [
+        "Next.js",
+        "TypeScript",
+        "i18next",
+        "Tailwind CSS",
+        "Vercel",
+      ],
+    },
   ],
   accomplishments: [
     {
       title: "Meta Back-End Developer",
+      issuer: "Meta",
       description:
         "Introduction to Back-End Development; Programming in Python; Introduction to Databases for Back-End Development; Django Web Framework; APIs; The Full Stack; Back-End Developer Capstone",
       date: "2024-06-27",
@@ -160,6 +314,7 @@ Reached nearly 600 users, over 3500 impressions, and over 5000 searches as of Au
     },
     {
       title: "Python for Data Science, AI, & Development",
+      issuer: "IBM",
       description: "Python for Data Science, AI, & Development",
       date: "2024-09-05",
       type: "certification",
@@ -167,7 +322,16 @@ Reached nearly 600 users, over 3500 impressions, and over 5000 searches as of Au
     },
     {
       title: "Generative AI: Prompt Engineering Basics",
+      issuer: "IBM",
       description: "Generative AI: Prompt Engineering Basics",
+      date: "2024-09-05",
+      type: "certification",
+      link: "https://www.coursera.org/account/accomplishments/verify/1874MYYDKNE8",
+    },
+    {
+      title: "Managing Social and Human Capital",
+      issuer: "University of Pennsylvania",
+      description: "From this course, I learned how to effectively manage people — the most valuable yet unpredictable asset in any organization. I gained insights into motivating individual performance, designing fair and effective reward systems, organizing work for high performance, and making sound management decisions. I also learned how to shape and adapt an organization’s structure to drive both business success and a healthy social environment. Overall, the course helped me build a strong foundation in people management and organizational leadership.",
       date: "2024-09-05",
       type: "certification",
       link: "https://www.coursera.org/account/accomplishments/verify/1874MYYDKNE8",

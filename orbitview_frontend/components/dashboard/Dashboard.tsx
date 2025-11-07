@@ -206,7 +206,7 @@ export function Dashboard() {
                 <Button
                   variant="secondary"
                   className="w-full justify-start"
-                  onClick={() => (window.location.href = "/onboarding")}
+                  onClick={() => (window.location.href = "/profile/edit")}
                 >
                   <Edit className="mr-2 w-4 h-4" />
                   Edit Profile

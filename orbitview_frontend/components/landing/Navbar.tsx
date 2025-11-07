@@ -26,9 +26,11 @@ export function Navbar() {
             >
               Pricing
             </Link>
-            <Button variant="ghost" size="sm">
-              Sign In
-            </Button>
+            <Link href="/login">
+              <Button variant="ghost" size="sm">
+                Sign In
+              </Button>
+            </Link>
             <Button variant="gradient" size="sm">
               Get Started
             </Button>

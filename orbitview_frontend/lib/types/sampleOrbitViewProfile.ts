@@ -1,19 +1,19 @@
 import { OrbitViewProfile } from "./types";
 import { defaultPrivacySettings } from "./defaults";
 
-import tommy from "/tommy.png";
-import leetops from "/leetops.avif";
-import huvtspAlumni from "/huvtsp_search.avif";
-import colorproject from "/thecolorproject.avif";
-import medport from "/medport.avif";
-import clearsmile from "/clearsmile.avif";
-import omniwave from "/omniwave.avif";
-import planebrain from "/planebrain.avif";
-import ssn from "/ssn.avif";
-import desync from "/desync.avif";
-import EarlHaigScienceSociety from "/EarlHaigScienceSociety.avif";
-import azure_partners from "/azure_partners.avif";
-import personalweb from "/personalweb.avif";
+import tommy from "@/public/tommy.png";
+import leetops from "@/public/leetops.avif";
+import huvtspAlumni from "@/public/huvtsp_search.avif";
+import colorproject from "@/public/thecolorproject.avif";
+import medport from "@/public/medport.avif";
+import clearsmile from "@/public/clearsmile.avif";
+import omniwave from "@/public/omniwave.avif";
+import planebrain from "@/public/planebrain.avif";
+import ssn from "@/public/ssn.avif";
+import desync from "@/public/desync.avif";
+import EarlHaigScienceSociety from "@/public/EarlHaigScienceSociety.avif";
+import azure_partners from "@/public/azure_partners.avif";
+import personalweb from "@/public/personalweb.avif";
 
 export const TomZhang: OrbitViewProfile = {
   first_name: "Tom",
@@ -248,7 +248,8 @@ Reached nearly 600 users, over 3500 impressions, and over 5000 searches as of Au
       title: "Earl Haig Science Society",
       description:
         "Earl Haig Science Society is part of Ontario’s largest public high school, serving as the central hub for STEM labs, contests, and opportunities. As Head of Engineering, I led workshops, collaborated with staff to solve school problems, and built the official website serving 330+ members (16% of the school). Integrated event modals with Google and Outlook Calendar APIs for seamless scheduling.",
-      cover_image: {
+      cover_image: 
+      {
         image: EarlHaigScienceSociety,
         url: "url",
         alt: "Earl Haig Science Society",

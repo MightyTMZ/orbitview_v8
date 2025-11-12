@@ -1,9 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import type { StaticImageData } from "next/image";
 
 interface Message {
   id: string;
@@ -15,6 +17,8 @@ interface Message {
 interface ChatInterfaceProps {
   username: string;
   userTagline?: string;
+  profileImage: StaticImageData;
+  profileAlt?: string | null;
 }
 
 const suggestedQuestions = [
@@ -25,13 +29,19 @@ const suggestedQuestions = [
   "What's your experience with AI?",
 ];
 
-export function ChatInterface({ username, userTagline }: ChatInterfaceProps) {
+export function ChatInterface({
+  username,
+  userTagline,
+  profileImage,
+  profileAlt,
+}: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const streamingIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -40,6 +50,14 @@ export function ChatInterface({ username, userTagline }: ChatInterfaceProps) {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    return () => {
+      if (streamingIntervalRef.current) {
+        clearInterval(streamingIntervalRef.current);
+      }
+    };
+  }, []);
 
   const handleSend = async (text: string) => {
     if (!text.trim() || isTyping) return;
@@ -55,17 +73,59 @@ export function ChatInterface({ username, userTagline }: ChatInterfaceProps) {
     setInput("");
     setIsTyping(true);
 
-    // Simulate AI response (replace with actual API call)
+    if (streamingIntervalRef.current) {
+      clearInterval(streamingIntervalRef.current);
+    }
+
     setTimeout(() => {
+      const response = generateAIResponse(text.trim());
+      const tokens = tokenizeResponse(response);
+      const aiMessageId = `${Date.now()}-ai`;
+      let currentIndex = 0;
+
       const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
+        id: aiMessageId,
         role: "ai",
-        text: generateAIResponse(text.trim()),
+        text: "",
         timestamp: new Date(),
       };
+
       setMessages((prev) => [...prev, aiMessage]);
-      setIsTyping(false);
-    }, 1500);
+
+      streamingIntervalRef.current = setInterval(() => {
+        if (currentIndex >= tokens.length) {
+          if (streamingIntervalRef.current) {
+            clearInterval(streamingIntervalRef.current);
+          }
+          setIsTyping(false);
+          return;
+        }
+
+        let nextIndex = currentIndex + 1;
+        while (nextIndex < tokens.length && /^\s+$/.test(tokens[nextIndex])) {
+          nextIndex += 1;
+        }
+
+        const nextText = tokens.slice(0, nextIndex).join("");
+        currentIndex = nextIndex;
+
+        setMessages((prev) =>
+          prev.map((message) =>
+            message.id === aiMessageId
+              ? {
+                  ...message,
+                  text: nextText,
+                }
+              : message
+          )
+        );
+
+        if (currentIndex >= tokens.length && streamingIntervalRef.current) {
+          clearInterval(streamingIntervalRef.current);
+          setIsTyping(false);
+        }
+      }, 45);
+    }, 400);
   };
 
   const generateAIResponse = (question: string): string => {
@@ -87,6 +147,9 @@ export function ChatInterface({ username, userTagline }: ChatInterfaceProps) {
 
     return "That's a great question! I'd love to chat more about that. Feel free to ask me anything else about my experience, projects, or values.";
   };
+
+  const tokenizeResponse = (response: string) =>
+    response.match(/\S+|\s+/g) ?? [response];
 
   const handleCopy = async (text: string, id: string) => {
     await navigator.clipboard.writeText(text);
@@ -140,8 +203,14 @@ export function ChatInterface({ username, userTagline }: ChatInterfaceProps) {
             >
               <div className="flex gap-2 max-w-[85%] md:max-w-[75%]">
                 {message.role === "ai" && (
-                  <div className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0 mt-1">
-                    <span className="text-white text-xs font-bold">AI</span>
+                  <div className="mt-1 flex h-8 w-8 flex-shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10">
+                    <Image
+                      src={profileImage}
+                      alt={profileAlt ?? username}
+                      width={32}
+                      height={32}
+                      className="h-full w-full object-cover"
+                    />
                   </div>
                 )}
                 <div className="flex flex-col gap-1">

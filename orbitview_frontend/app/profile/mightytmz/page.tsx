@@ -3,6 +3,7 @@
 
 import Image from "next/image";
 import { useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowUpRight,
   CheckCircle2,
@@ -11,10 +12,14 @@ import {
   MessageCircle,
   Sparkles,
   ShieldCheck,
+  Settings2,
+  X,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { TomZhang } from "@/lib/types/sampleOrbitViewProfile";
+import { ChatInterface } from "@/components/chat/ChatInterface";
+import type { AIPersonality } from "@/lib/types/types";
 
 const spikeCopy =
   "Tom builds technical products that scale to hundreds of thousands of users—from incident response platforms to global crowdsourcing games. Strong systems thinker with Y Combinator recognition and a track record of shipping ambitious ideas in days, not months.";
@@ -38,8 +43,18 @@ const suggestedQuestions = [
   "What hackathons does he recommend?",
 ];
 
+const defaultPersonality: AIPersonality = {
+  tone: "professional",
+  formality_level: 7,
+  response_length: "balanced",
+  personality_traits: ["systems thinker", "fast execution"],
+};
+
 export default function MightyTmzProfilePage() {
   const [showAllProjects, setShowAllProjects] = useState(false);
+  const [isChatOverlayOpen, setIsChatOverlayOpen] = useState(false);
+  const [showPersonalityPanel, setShowPersonalityPanel] = useState(false);
+  const [aiPersonality, setAiPersonality] = useState<AIPersonality>(defaultPersonality);
 
   const featuredProject = TomZhang.works[0];
   const featuredCover = featuredProject?.cover_image ?? null;
@@ -205,7 +220,15 @@ export default function MightyTmzProfilePage() {
 
                 <div className="flex flex-col gap-4 rounded-2xl border border-white/10 bg-black/40 p-6 text-sm text-gray-300">
                   <p>High-stakes viewers connect fastest through the AI co-pilot.</p>
-                  <Button variant="gradient" size="lg" className="gap-2">
+                  <Button
+                    variant="gradient"
+                    size="lg"
+                    className="gap-2"
+                    onClick={() => {
+                      setIsChatOverlayOpen(true);
+                      setShowPersonalityPanel(false);
+                    }}
+                  >
                     <MessageCircle className="h-5 w-5" />
                     Ask Tom&apos;s AI
                   </Button>
@@ -473,7 +496,15 @@ export default function MightyTmzProfilePage() {
                   Send
                   <ArrowUpRight className="h-4 w-4" />
                 </Button>
-                <Button variant="ghost" size="sm" className="text-gray-400">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-gray-400"
+                  onClick={() => {
+                    setIsChatOverlayOpen(true);
+                    setShowPersonalityPanel(true);
+                  }}
+                >
                   ⚙️ Adjust AI personality
                 </Button>
               </div>
@@ -481,6 +512,78 @@ export default function MightyTmzProfilePage() {
           </section>
         </div>
       </main>
+
+      <AnimatePresence>
+        {isChatOverlayOpen && (
+          <motion.div
+            key="chat-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-end justify-end bg-black/20 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ y: 40, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 40, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 260, damping: 26 }}
+              className="pointer-events-auto m-4 flex w-full max-w-5xl flex-col overflow-hidden rounded-3xl border border-white/10 bg-[#080808]/95 shadow-2xl shadow-orange-500/20"
+            >
+              <header className="flex items-center justify-between border-b border-white/10 bg-black/60 px-6 py-4">
+                <div>
+                  <div className="text-sm font-semibold text-white">Chat with Tom&apos;s AI</div>
+                  <p className="text-xs text-gray-400">
+                    Tone: {aiPersonality.tone} · Formality {aiPersonality.formality_level}/10 ·{" "}
+                    {aiPersonality.response_length} responses
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    className="gap-2"
+                    onClick={() => setShowPersonalityPanel((prev) => !prev)}
+                  >
+                    <Settings2 className="h-4 w-4" />
+                    {showPersonalityPanel ? "Hide adjustments" : "Adjust personality"}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-gray-300 hover:text-white"
+                    onClick={() => setIsChatOverlayOpen(false)}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              </header>
+
+              <div className="flex flex-col gap-4 px-6 py-6 lg:flex-row">
+                {showPersonalityPanel && (
+                  <aside className="w-full max-w-sm rounded-2xl border border-white/10 bg-black/70 p-5">
+                    <PersonalitySettings
+                      personality={aiPersonality}
+                      onChange={setAiPersonality}
+                      onReset={() => setAiPersonality(defaultPersonality)}
+                    />
+                  </aside>
+                )}
+
+                <div className="flex-1">
+                  <div className="flex h-[520px] flex-col overflow-hidden rounded-2xl border border-white/10 bg-black/60">
+                    <ChatInterface
+                      username="Tom Zhang"
+                      userTagline={spikeCopy}
+                      profileImage={TomZhang.profile_picture.image}
+                      profileAlt={TomZhang.profile_picture.alt}
+                    />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -490,6 +593,141 @@ function ShieldIcon() {
     <span className="mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-orange-500/20 text-xs text-orange-200">
       <ShieldCheck className="h-3 w-3" />
     </span>
+  );
+}
+
+interface PersonalitySettingsProps {
+  personality: AIPersonality;
+  onChange: (personality: AIPersonality) => void;
+  onReset: () => void;
+}
+
+function PersonalitySettings({ personality, onChange, onReset }: PersonalitySettingsProps) {
+  const toneOptions: AIPersonality["tone"][] = [
+    "professional",
+    "casual",
+    "friendly",
+    "witty",
+    "technical",
+  ];
+
+  const responseLengthOptions: AIPersonality["response_length"][] = [
+    "concise",
+    "balanced",
+    "detailed",
+  ];
+
+  return (
+    <div className="space-y-5 text-sm text-gray-200">
+      <div className="flex items-center justify-between">
+        <h3 className="text-base font-semibold text-white">AI personality</h3>
+        <Button variant="ghost" size="sm" className="text-xs text-gray-400" onClick={onReset}>
+          Reset
+        </Button>
+      </div>
+      <div className="space-y-3">
+        <label className="text-xs uppercase tracking-wide text-gray-400">Tone</label>
+        <div className="grid grid-cols-2 gap-2">
+          {toneOptions.map((tone) => (
+            <button
+              key={tone}
+              type="button"
+              onClick={() => onChange({ ...personality, tone })}
+              className={`rounded-lg border px-3 py-2 text-left capitalize transition ${
+                personality.tone === tone
+                  ? "border-orange-400/60 bg-orange-500/15 text-white"
+                  : "border-white/10 bg-white/5 hover:border-orange-400/40"
+              }`}
+            >
+              {tone}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <label className="flex items-center justify-between text-xs uppercase tracking-wide text-gray-400">
+          Formality
+          <span className="text-gray-300">{personality.formality_level}/10</span>
+        </label>
+        <input
+          type="range"
+          min={1}
+          max={10}
+          value={personality.formality_level}
+          onChange={(event) =>
+            onChange({
+              ...personality,
+              formality_level: Number(event.target.value) as AIPersonality["formality_level"],
+            })
+          }
+          className="w-full accent-orange-500"
+        />
+        <div className="flex justify-between text-[10px] uppercase tracking-wide text-gray-500">
+          <span>Casual</span>
+          <span>Formal</span>
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <label className="text-xs uppercase tracking-wide text-gray-400">Response length</label>
+        <div className="flex gap-2">
+          {responseLengthOptions.map((option) => (
+            <button
+              key={option}
+              type="button"
+              onClick={() => onChange({ ...personality, response_length: option })}
+              className={`flex-1 rounded-lg border px-3 py-2 text-center capitalize transition ${
+                personality.response_length === option
+                  ? "border-orange-400/60 bg-orange-500/15 text-white"
+                  : "border-white/10 bg-white/5 hover:border-orange-400/40"
+              }`}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <label className="text-xs uppercase tracking-wide text-gray-400">
+          Custom instructions
+        </label>
+        <textarea
+          rows={3}
+          value={personality.custom_instructions ?? ""}
+          onChange={(event) =>
+            onChange({
+              ...personality,
+              custom_instructions: event.target.value || undefined,
+            })
+          }
+          placeholder="Always mention Tom's speed to ship, highlight climate experience..."
+          className="w-full rounded-lg border border-white/10 bg-black/40 p-3 text-sm text-white placeholder:text-gray-500 focus:border-orange-500/40 focus:outline-none focus:ring-2 focus:ring-orange-500/20"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <label className="text-xs uppercase tracking-wide text-gray-400">
+          Traits emphasized
+        </label>
+        <input
+          type="text"
+          value={(personality.personality_traits ?? []).join(", ")}
+          onChange={(event) =>
+            onChange({
+              ...personality,
+              personality_traits: event.target.value
+                .split(",")
+                .map((trait) => trait.trim())
+                .filter(Boolean),
+            })
+          }
+          placeholder="systems thinker, calm under pressure, climate-driven"
+          className="w-full rounded-lg border border-white/10 bg-black/40 p-3 text-sm text-white placeholder:text-gray-500 focus:border-orange-500/40 focus:outline-none focus:ring-2 focus:ring-orange-500/20"
+        />
+      </div>
+    </div>
   );
 }
 

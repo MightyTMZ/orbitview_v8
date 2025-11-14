@@ -73,7 +73,7 @@ export function ExampleProfiles() {
                   {profile.conversations} conversations
                 </span>
                 <span className="text-sm gradient-text font-medium">
-                  orbitview.com/{profile.username}
+                  orbitview.net/{profile.username}
                 </span>
               </div>
             </motion.a>

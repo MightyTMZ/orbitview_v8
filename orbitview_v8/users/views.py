@@ -2,10 +2,13 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from decouple import config
 from django.contrib.auth import login
 from django.conf import settings
+from django.http import StreamingHttpResponse
 from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
+from groq import Groq
 import re
 
 from .models import User, OrbitViewProfile
@@ -170,3 +173,34 @@ def current_user_view(request):
         'has_profile': has_profile,
         'profile_username': profile_username,
     })
+
+groq_api_key = config("GROQ_API_KEY")
+client = Groq(api_key=groq_api_key)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def stream_groq(request):
+
+    user_message = request.data.get("message")
+    print(user_message)
+
+    system_prompt = "You are a very helpful assistant"
+
+    def stream():
+        response = client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message},
+            ],
+            stream=True,
+        )
+
+        for chunk in response:
+            delta = chunk.choices[0].delta
+            content = delta.content if delta.content else None
+            if content:
+                # Flush the token to the client immediately
+                yield content
+
+    return StreamingHttpResponse(stream(), content_type="text/event-stream")
